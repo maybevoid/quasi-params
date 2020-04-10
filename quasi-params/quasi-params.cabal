@@ -18,10 +18,11 @@ extra-source-files:  CHANGELOG.md
 common deps
   ghc-options: -Wall -O2
   default-language: Haskell2010
+
   build-depends:
       base
-    , constraints
     , ghc-prim
+
   default-extensions:
     GADTs
     Strict
@@ -43,6 +44,7 @@ common deps
     ScopedTypeVariables
     UndecidableInstances
     QuantifiedConstraints
+    FunctionalDependencies
     MultiParamTypeClasses
 
 library
@@ -50,6 +52,28 @@ library
 
   exposed-modules:
       Data.QuasiParam
+      Data.QuasiParam.Label
+      Data.QuasiParam.Tag
+      Data.QuasiParam.Name
+
+  other-modules:
+    Data.QuasiParam.Internal
 
   hs-source-dirs:
       src/lib
+
+test-suite quasi-params-test
+  import: deps
+  type: exitcode-stdio-1.0
+  main-is: Main.hs
+  hs-source-dirs:
+      src/test
+
+  other-modules:
+    QuasiParam.Test.Main
+
+  build-depends:
+      quasi-params
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck

@@ -5,4 +5,7 @@ clean:
 build:
 	cabal build --enable-tests --enable-benchmark --enable-documentation all
 
-.PHONY: clean build
+test:
+	cabal run quasi-params-test
+
+.PHONY: clean build test

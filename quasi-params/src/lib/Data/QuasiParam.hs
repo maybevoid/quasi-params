@@ -1,76 +1,61 @@
 {-# LANGUAGE PolyKinds #-}
-{-# LANGUAGE FunctionalDependencies #-}
 
 module Data.QuasiParam
-  ( ImplicitParam
-  , NamedParam
+  ( LabelledParam
   , TaggedParam
-  , captureParam
-  , captureName
+  , NamedParam
+  , captureLabel
+  , withLabel
   , captureTag
-  , withParam
-  , withName
   , withTag
+  , captureName
+  , withName
   )
 where
 
-import Data.Kind (Type)
-import GHC.Types (Symbol)
-import Unsafe.Coerce (unsafeCoerce)
-import Data.Constraint (Dict (..))
+import qualified Data.QuasiParam.Label as Label
+import qualified Data.QuasiParam.Tag as Tag
+import qualified Data.QuasiParam.Name as Name
 
-class
-  ImplicitParam' k (label :: k) a
-  | label -> a
-  where
-    captureParam' :: a
+type LabelledParam k (label :: k) = Label.Param k label
+type TaggedParam = Tag.Param
+type NamedParam = Name.Param
 
-data ParamReflector k (label :: k) a = ParamReflector {
-  _reflectParam :: a
-}
-
-type ImplicitParam k (label :: k) = ImplicitParam' k label
-type NamedParam label = ImplicitParam Symbol label
-type TaggedParam label = ImplicitParam Type label
-
-captureParam
+captureLabel
   :: forall k (label :: k) a
-   . (ImplicitParam k label a)
+   . (LabelledParam k label a)
   => a
-captureParam = captureParam' @k @label @a
+captureLabel = Label.captureParam @k @label
 
-captureName
-  :: forall label a
-   . (NamedParam label a)
-  => a
-captureName = captureParam @Symbol @label
-
-captureTag
-  :: forall label a
-   . (TaggedParam label a)
-  => a
-captureTag = captureParam @Type @label
-
-withParam
+withLabel
   :: forall k (label :: k) a r
    . a
-  -> ((ImplicitParam k label a) => r)
+  -> (LabelledParam k label a => r)
   -> r
-withParam x cont = case dict of Dict -> cont
- where
-  dict :: Dict (ImplicitParam k label a)
-  dict = unsafeCoerce $ ParamReflector @k @label @a x
+withLabel = Label.withParam @k @label
 
-withName
-  :: forall label a r
-   . a
-  -> ((NamedParam label a) => r)
-  -> r
-withName = withParam @Symbol @label @a
+captureTag
+  :: forall tag a
+   . (TaggedParam tag a)
+  => a
+captureTag = Tag.captureParam @tag
 
 withTag
-  :: forall label a r
+  :: forall tag a r
    . a
-  -> ((TaggedParam label a) => r)
+  -> (TaggedParam tag a => r)
   -> r
-withTag = withParam @Type @label @a
+withTag = Tag.withParam @tag
+
+captureName
+  :: forall name a
+   . (NamedParam name a)
+  => a
+captureName = Name.captureParam @name
+
+withName
+  :: forall name a r
+   . a
+  -> (NamedParam name a => r)
+  -> r
+withName = Name.withParam @name
