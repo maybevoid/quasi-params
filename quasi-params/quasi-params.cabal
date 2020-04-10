@@ -76,4 +76,3 @@ test-suite quasi-params-test
       quasi-params
     , tasty
     , tasty-hunit
-    , tasty-quickcheck

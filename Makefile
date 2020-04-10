@@ -8,4 +8,7 @@ build:
 test:
 	cabal run quasi-params-test
 
+cachix:
+	nix-store -qR --include-outputs `nix-instantiate nix/shell.nix` | cachix push maybevoid
+
 .PHONY: clean build test
