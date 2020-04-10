@@ -7,5 +7,5 @@ let
 in
 { ghc86 = release.ghc86.build;
   ghc88 = release.ghc88.build;
-  ghc88 = release.ghc810.build;
+  ghc810 = release.ghc810.build;
 }
