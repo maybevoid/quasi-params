@@ -27,24 +27,18 @@ common deps
     GADTs
     Strict
     DataKinds
-    EmptyCase
-    StrictData
     RankNTypes
+    StrictData
     TypeFamilies
     InstanceSigs
     TypeOperators
-    DeriveFunctor
     ExplicitForAll
     KindSignatures
     ConstraintKinds
     TypeApplications
     FlexibleContexts
     FlexibleInstances
-    AllowAmbiguousTypes
     ScopedTypeVariables
-    UndecidableInstances
-    QuantifiedConstraints
-    FunctionalDependencies
     MultiParamTypeClasses
 
 library
@@ -57,7 +51,8 @@ library
       Data.QuasiParam.Name
 
   other-modules:
-    Data.QuasiParam.Internal
+    Data.QuasiParam.Internal.Label
+    Data.QuasiParam.Internal.Name
 
   hs-source-dirs:
       src/lib
@@ -70,7 +65,11 @@ test-suite quasi-params-test
       src/test
 
   other-modules:
-    QuasiParam.Test.Main
+    Test.QuasiParam.Main
+    Test.QuasiParam.Basic
+    Test.QuasiParam.Basic.Name
+    Test.QuasiParam.Overlap
+    Test.QuasiParam.Stress
 
   build-depends:
       quasi-params

@@ -1,4 +1,5 @@
 {-# LANGUAGE PolyKinds #-}
+{-# LANGUAGE AllowAmbiguousTypes #-}
 
 module Data.QuasiParam
   ( LabelledParam
@@ -19,7 +20,7 @@ import qualified Data.QuasiParam.Name as Name
 
 type LabelledParam k (label :: k) = Label.Param k label
 type TaggedParam = Tag.Param
-type NamedParam = Name.Param
+type NamedParam name a = Name.Param name a
 
 captureLabel
   :: forall k (label :: k) a

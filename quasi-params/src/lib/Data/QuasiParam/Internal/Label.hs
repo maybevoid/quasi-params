@@ -1,7 +1,9 @@
 {-# LANGUAGE PolyKinds #-}
+{-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE FunctionalDependencies #-}
 
-module Data.QuasiParam.Internal
-  ( QuasiParam (..)
+module Data.QuasiParam.Internal.Label
+  ( Param (..)
   , withParam
   )
 where
@@ -12,8 +14,7 @@ data Dict p where
   Dict :: p => Dict p
 
 class
-  QuasiParam k (label :: k) a
-  | label -> a
+  Param k (label :: k) a | k label -> a
   where
     captureParam :: a
 
@@ -23,9 +24,9 @@ data ParamReflector k (label :: k) a = ParamReflector
 withParam
   :: forall k (label :: k) a r
    . a
-  -> ((QuasiParam k label a) => r)
+  -> ((Param k label a) => r)
   -> r
 withParam x cont = case dict of Dict -> cont
  where
-  dict :: Dict (QuasiParam k label a)
+  dict :: Dict (Param k label a)
   dict = unsafeCoerce $ ParamReflector @k @label @a x

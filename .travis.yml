@@ -15,6 +15,17 @@ jobs:
     - language: haskell
 
       cabal: "3.0"
+      ghc: "8.10.1"
+
+      install:
+        - make build
+
+      script:
+        - make test
+
+    - language: haskell
+
+      cabal: "3.0"
       ghc: "8.8.3"
 
       install:
@@ -27,6 +38,17 @@ jobs:
 
       cabal: "3.0"
       ghc: "8.6.5"
+
+      install:
+        - make build
+
+      script:
+        - make test
+
+    - language: haskell
+
+      cabal: "3.0"
+      ghc: "8.6.4"
 
       install:
         - make build

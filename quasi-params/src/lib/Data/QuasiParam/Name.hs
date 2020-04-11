@@ -1,3 +1,5 @@
+{-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE UndecidableInstances #-}
 
 module Data.QuasiParam.Name
   ( Param
@@ -6,25 +8,25 @@ module Data.QuasiParam.Name
   )
 where
 
-import qualified Data.QuasiParam.Internal as Internal
+import qualified Data.QuasiParam.Internal.Name as Internal
 
-import GHC.Types (Symbol)
+type Param = Internal.Param
 
-class (Internal.QuasiParam Symbol name a)
-  => Param name a
+-- class (Internal.Param name a)
+--   => Param name a | name -> a
 
-instance (Internal.QuasiParam Symbol name a)
-  => Param name a
+-- instance (Internal.Param name a)
+--   => Param name a
 
 captureParam
   :: forall name a
    . (Param name a)
   => a
-captureParam = Internal.captureParam @Symbol @name
+captureParam = Internal.captureParam @name
 
 withParam
   :: forall name a r
    . a
   -> (Param name a => r)
   -> r
-withParam = Internal.withParam @Symbol @name
+withParam = Internal.withParam @name

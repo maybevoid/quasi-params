@@ -1,4 +1,7 @@
 {-# LANGUAGE PolyKinds #-}
+{-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE UndecidableInstances #-}
+{-# LANGUAGE FunctionalDependencies #-}
 
 module Data.QuasiParam.Label
   ( Param
@@ -7,12 +10,12 @@ module Data.QuasiParam.Label
   )
 where
 
-import qualified Data.QuasiParam.Internal as Internal
+import qualified Data.QuasiParam.Internal.Label as Internal
 
-class (Internal.QuasiParam k label a)
-  => Param k (label :: k) a
+class (Internal.Param k label a)
+  => Param k (label :: k) a | label -> a
 
-instance (Internal.QuasiParam k label a)
+instance (Internal.Param k label a)
   => Param k (label :: k) a
 
 captureParam
