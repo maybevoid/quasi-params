@@ -18,8 +18,8 @@ import qualified Data.QuasiParam.Label as Label
 import qualified Data.QuasiParam.Tag as Tag
 import qualified Data.QuasiParam.Name as Name
 
-type LabelledParam k (label :: k) = Label.Param k label
-type TaggedParam = Tag.Param
+type LabelledParam k (label :: k) a = Label.Param k label a
+type TaggedParam tag a = Tag.Param tag a
 type NamedParam name a = Name.Param name a
 
 captureLabel

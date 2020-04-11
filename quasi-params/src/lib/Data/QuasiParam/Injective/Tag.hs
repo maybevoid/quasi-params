@@ -1,13 +1,13 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
 
-module Data.QuasiParam.Tag
+module Data.QuasiParam.Injective.Tag
   ( Param
   , captureParam
   , withParam
   )
 where
 
-import qualified Data.QuasiParam.Internal as Internal
+import qualified Data.QuasiParam.Injective.Internal as Internal
 
 import Data.Kind (Type)
 

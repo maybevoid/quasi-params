@@ -1,8 +1,7 @@
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
-{-# LANGUAGE FunctionalDependencies #-}
 
-module Data.QuasiParam.Internal.Label
+module Data.QuasiParam.Internal
   ( Param (..)
   , withParam
   )
@@ -10,8 +9,7 @@ where
 
 import Unsafe.Coerce (unsafeCoerce)
 
-data Dict p where
-  Dict :: p => Dict p
+import Data.QuasiParam.Dict
 
 class
   Param k (label :: k) a | k label -> a

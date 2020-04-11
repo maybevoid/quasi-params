@@ -5,6 +5,7 @@ import Test.Tasty
 import qualified Test.QuasiParam.Basic as Basic
 import qualified Test.QuasiParam.Overlap as Overlap
 import qualified Test.QuasiParam.Stress as Stress
+import qualified Test.QuasiParam.Multi as Multi
 
 main :: IO ()
 main = defaultMain tests
@@ -14,4 +15,5 @@ tests = testGroup "Quasi parameters tests"
   [ Basic.tests
   , Overlap.tests
   , Stress.tests
+  , Multi.tests
   ]
