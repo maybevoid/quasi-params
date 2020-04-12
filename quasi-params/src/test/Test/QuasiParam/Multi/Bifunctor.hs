@@ -1,131 +1,78 @@
-{-# LANGUAGE PolyKinds #-}
-
 module Test.QuasiParam.Multi.Bifunctor where
 
-import Data.Kind
-import Data.Coerce
+import Test.Tasty
+import Test.Tasty.HUnit
 import GHC.Types (Symbol)
+import Data.Functor.Identity
 
 import qualified Data.QuasiParam.Multi as Multi
+import Test.QuasiParam.Multi.Internal.Bifunctor
 
-data Proxy (a :: k) = Proxy
+tests :: TestTree
+tests = testGroup "Bifunctor multi parameters tests"
+  [ testConversion
+  ]
 
-newtype Const (f :: Type -> Type) (g :: Type -> Type) (a :: Type)  = Const
-  { unConst :: f a }
+type Foo = Item "Foo" String
+type Bar = Item "Bar" String
+type Baz = Item "Baz" String
 
-data Pair a b = Pair a b
+type FooBar = Cons Foo Bar
+type BarFoo = Cons Bar Foo
+type FooBaz = Cons Foo Baz
+type FooBarBaz = Cons Foo (Cons Bar Baz)
+type BazBarFoo = Cons Baz (Cons Bar Foo)
 
-type FunctorPair = Pair (Type -> Type) (Type -> Type)
+type Entry (name :: Symbol) = Item name String Identity Identity
 
-type family First (x :: FunctorPair) = (y :: Type -> Type) | y -> x where
-  First ('Pair f g) = Const f g
+pattern Cons :: forall e1 e2 f g . e1 f g -> e2 f g -> Cons e1 e2 f g
+pattern Cons a b = MkCons (a, b)
+{-# COMPLETE Cons #-}
 
-type family Second (x :: FunctorPair) = (y :: Type -> Type) | y -> x where
-  Second ('Pair f g) = Const g f
+pattern Entry :: forall name . String -> String -> Entry name
+pattern Entry a b = Item (Identity a, Identity b)
+{-# COMPLETE Entry #-}
 
-newtype Payload (a :: Type) (x :: FunctorPair) = Payload
-  { unPayload :: (First x a, Second x a) }
+pattern Foo :: String -> String -> Entry "Foo"
+pattern Foo a b = Entry a b
+{-# COMPLETE Foo #-}
 
-newtype Nil (f :: Type -> Type) (g :: Type -> Type) = Nil ()
+pattern Bar :: String -> String -> Entry "Bar"
+pattern Bar a b = Entry a b
+{-# COMPLETE Bar #-}
 
-newtype Item (name :: Symbol) a (f :: Type -> Type) (g :: Type -> Type) = Item
-  { unItem :: (f a, g a) }
-  deriving (Eq, Show)
+pattern Baz :: String -> String -> Entry "Baz"
+pattern Baz a b = Entry a b
+{-# COMPLETE Baz #-}
 
-newtype Cons e1 e2 (f :: Type -> Type) (g :: Type -> Type) = MkCons
-  { unCons :: (e1 f g, e2 f g) }
-  deriving (Eq, Show)
+foo :: Entry "Foo"
+foo = Foo "foo1" "foo2"
 
-class
-  ( Multi.MultiParam FunctorPair (AsMultiParam e)
-  )
-  => IsMultiParam (e :: (Type -> Type) -> (Type -> Type) -> Type) where
-    type family AsMultiParam e
-      = (e2 :: FunctorPair -> Type) | e2 -> e
+bar :: Entry "Bar"
+bar = Bar "bar1" "bar2"
 
-    coerceTo
-      :: forall f g
-       . e f g
-       -> AsMultiParam e ('Pair f g)
+baz :: Entry "Baz"
+baz = Baz "baz1" "baz2"
 
-    coerceFrom
-      :: forall f g
-       . AsMultiParam e ('Pair f g)
-      -> e f g
+fooBar :: FooBar Identity Identity
+fooBar = Cons foo bar
 
-instance IsMultiParam Nil where
-  type AsMultiParam Nil = Multi.Empty FunctorPair
+fooBar2 :: FooBar Identity Identity
+fooBar2 = castValue fooBar
 
-  coerceTo = coerce
-  coerceFrom = coerce
+barFoo :: BarFoo Identity Identity
+barFoo = castValue fooBar
 
-instance IsMultiParam (Item name a) where
-  type AsMultiParam (Item name a) =
-    Multi.Elem Symbol FunctorPair name (Payload a)
+fooBarBaz :: FooBarBaz Identity Identity
+fooBarBaz = Cons foo $ Cons bar baz
 
-  coerceTo = coerce
-  coerceFrom = coerce
+bazBarFoo :: BazBarFoo Identity Identity
+bazBarFoo = castValue fooBarBaz
 
-instance
-  ( IsMultiParam e1
-  , IsMultiParam e2
-  , AsMultiParam e1 ~ e1'
-  , AsMultiParam e2 ~ e2'
-  , Multi.Cons FunctorPair e1' e2' ~ e3
-  , forall f g . Coercible (Cons e1 e2 f g) (e3 ('Pair f g))
-  , forall f g . Coercible (e3 ('Pair f g)) (Cons e1 e2 f g)
-  )
-  => IsMultiParam (Cons e1 e2) where
-    type AsMultiParam (Cons e1 e2) =
-      Multi.Cons
-        FunctorPair
-        (AsMultiParam e1)
-        (AsMultiParam e2)
-
-    coerceTo = coerce
-    coerceFrom = coerce
-
-withParam
-  :: forall e e' f g r
-   . ( IsMultiParam e
-     , AsMultiParam e ~ e'
-     , Multi.MultiParam FunctorPair e'
-     )
-  => e f g
-  -> (Multi.ParamConstraint FunctorPair e' ('Pair f g) => r)
-  -> r
-withParam e cont = Multi.withParam e' cont
- where
-  e' :: e' ('Pair f g)
-  e' = coerceTo e
-
-captureParam
-  :: forall e e' f g
-   . ( IsMultiParam e
-     , AsMultiParam e ~ e'
-     , Multi.MultiParam FunctorPair e'
-     , Multi.ParamConstraint FunctorPair e' ('Pair f g)
-     )
-  => e f g
-captureParam = coerceFrom e'
- where
-  e' :: e' ('Pair f g)
-  e' = Multi.captureParam @FunctorPair @e'
-
-castValue
-  :: forall e1 e2 e1' e2' f g
-   . ( IsMultiParam e1
-     , IsMultiParam e2
-     , AsMultiParam e1 ~ e1'
-     , AsMultiParam e2 ~ e2'
-     , Multi.CastParam FunctorPair e1' e2'
-     )
-  => e1 f g
-  -> e2 f g
-castValue e1 = coerceFrom e2'
- where
-  e1' :: e1' ('Pair f g)
-  e1' = coerceTo e1
-
-  e2' :: e2' ('Pair f g)
-  e2' = Multi.castValue e1'
+testConversion :: TestTree
+testConversion = testCase "test conversion to multi param bifunctor" $ do
+  case bazBarFoo of
+    Cons (Baz baz1 baz2) (Cons (Bar bar1 bar2) (Foo foo1 foo2)) ->
+      assertEqual "should be able to convert to baz bar foo"
+        (foo1, foo2, bar1, bar2, baz1, baz2)
+        ("foo1", "foo2", "bar1", "bar2", "baz1", "baz2")

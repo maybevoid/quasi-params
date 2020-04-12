@@ -1,4 +1,4 @@
-module Test.QuasiParam.Multi.Entry where
+module Test.QuasiParam.Multi.Internal.Entry where
 
 import Data.Kind
 import Data.Coerce

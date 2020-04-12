@@ -1,6 +1,6 @@
 {-# LANGUAGE PolyKinds #-}
 
-module Test.QuasiParam.Multi.Pair where
+module Test.QuasiParam.Multi.Internal.Pair where
 
 import Data.Kind
 import Data.Coerce

@@ -90,9 +90,11 @@ test-suite quasi-params-test
     Test.QuasiParam.Stress
     Test.QuasiParam.Multi
     Test.QuasiParam.Multi.Item
-    Test.QuasiParam.Multi.Entry
-    Test.QuasiParam.Multi.Pair
     Test.QuasiParam.Multi.Bifunctor
+    Test.QuasiParam.Multi.Internal.Item
+    Test.QuasiParam.Multi.Internal.Entry
+    Test.QuasiParam.Multi.Internal.Pair
+    Test.QuasiParam.Multi.Internal.Bifunctor
 
   build-depends:
       quasi-params
