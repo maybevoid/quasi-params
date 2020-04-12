@@ -35,6 +35,8 @@ common deps
     ExplicitForAll
     KindSignatures
     ConstraintKinds
+    PatternSynonyms
+    RoleAnnotations
     TypeApplications
     FlexibleContexts
     FlexibleInstances
