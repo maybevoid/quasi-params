@@ -90,6 +90,8 @@ test-suite quasi-params-test
     Test.QuasiParam.Stress
     Test.QuasiParam.Multi
     Test.QuasiParam.Multi.Item
+    Test.QuasiParam.Multi.Entry
+    Test.QuasiParam.Multi.Pair
 
   build-depends:
       quasi-params

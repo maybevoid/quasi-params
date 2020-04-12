@@ -10,11 +10,9 @@ newtype Empty k (t :: k) = Empty ()
 
 newtype Elem k1 k2 (label :: k1) (e :: k2 -> Type) (t :: k2)
   = Elem { unElem :: e t }
-  deriving (Eq)
 
 newtype Cons k (e1 :: k -> Type) (e2 :: k -> Type) (t :: k)
   = Cons { unCons :: (e1 t, e2 t) }
-  deriving (Eq)
 
 class NoConstraint k (t :: k)
 instance NoConstraint k (t :: k)
