@@ -1,5 +1,4 @@
 {-# LANGUAGE PolyKinds #-}
-{-# LANGUAGE UndecidableInstances #-}
 
 module Data.QuasiParam.Multi.Param where
 

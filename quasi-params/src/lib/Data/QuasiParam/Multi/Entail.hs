@@ -1,6 +1,5 @@
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
-{-# LANGUAGE UndecidableInstances #-}
 
 module Data.QuasiParam.Multi.Entail where
 
