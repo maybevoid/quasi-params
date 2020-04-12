@@ -13,10 +13,10 @@ newtype Const a b = Const
 
 data Pair a b = Pair a b
 
-type family First (x :: Pair a b) = (y :: Type) | y -> x a b where
+type family First (x :: Pair Type Type) = (y :: Type) | y -> x where
   First ('Pair a b) = Const a b
 
-type family Second (x :: Pair a b) = (y :: Type) | y -> x a b where
+type family Second (x :: Pair Type Type) = (y :: Type) | y -> x where
   Second ('Pair a b) = Const b a
 
 newtype Payload (x :: Pair Type Type) = Payload

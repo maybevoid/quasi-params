@@ -92,6 +92,7 @@ test-suite quasi-params-test
     Test.QuasiParam.Multi.Item
     Test.QuasiParam.Multi.Entry
     Test.QuasiParam.Multi.Pair
+    Test.QuasiParam.Multi.Bifunctor
 
   build-depends:
       quasi-params
