@@ -2,8 +2,9 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
 
 module Data.QuasiParam.Multi
-  ( Internal.Elem (..)
-  , Internal.Union (..)
+  ( Internal.Empty (..)
+  , Internal.Elem (..)
+  , Internal.Cons (..)
   , MultiParam
   , ParamConstraint
   , CastParam

@@ -7,11 +7,16 @@ import qualified Data.QuasiParam.Label as Label
 
 import Data.Kind (Type, Constraint)
 
-data Elem k1 k2 (label :: k1) (e :: k2 -> Type) (t :: k2) where
-  Elem :: e t -> Elem k1 k2 label e t
+newtype Empty k (t :: k) = Empty ()
 
-data Union k (e1 :: k -> Type) (e2 :: k -> Type) (t :: k) where
-  Union :: e1 t -> e2 t -> Union k e1 e2 t
+newtype Elem k1 k2 (label :: k1) (e :: k2 -> Type) (t :: k2)
+  = Elem { unElem :: e t }
+
+newtype Cons k (e1 :: k -> Type) (e2 :: k -> Type) (t :: k)
+  = Cons { unCons :: (e1 t, e2 t) }
+
+class NoConstraint k (t :: k)
+instance NoConstraint k (t :: k)
 
 class MultiParam k (e :: k -> Type) where
   type family ParamConstraint k (e :: k -> Type) (t :: k)
@@ -27,6 +32,13 @@ class MultiParam k (e :: k -> Type) where
      . e t
     -> (ParamConstraint k e t => r)
     -> r
+
+instance MultiParam k (Empty k) where
+  type ParamConstraint k (Empty k) (t :: k)
+    = NoConstraint k t
+
+  captureParam = Empty ()
+  withParam (Empty ()) cont = cont
 
 instance MultiParam k2 (Elem k1 k2 (label :: k1) (e :: k2 -> Type)) where
   type ParamConstraint k2 (Elem k1 k2 (label :: k1) (e :: k2 -> Type)) (t :: k2)
@@ -49,20 +61,20 @@ instance
   ( MultiParam k e1
   , MultiParam k e2
   )
-  => MultiParam k (Union k e1 e2) where
-    type ParamConstraint k (Union k e1 e2) (t :: k)
+  => MultiParam k (Cons k e1 e2) where
+    type ParamConstraint k (Cons k e1 e2) (t :: k)
       = (ParamConstraint k e1 t, ParamConstraint k e2 t)
 
     captureParam
       :: forall (t :: k)
        . (ParamConstraint k e1 t, ParamConstraint k e2 t)
-      => Union k e1 e2 t
-    captureParam = Union (captureParam @k @e1) (captureParam @k @e2)
+      => Cons k e1 e2 t
+    captureParam = Cons ((captureParam @k @e1), (captureParam @k @e2))
 
     withParam
       :: forall (t :: k) r
-       . Union k e1 e2 t
+       . Cons k e1 e2 t
       -> ((ParamConstraint k e1 t, ParamConstraint k e2 t) => r)
       -> r
-    withParam (Union e1 e2) cont =
+    withParam (Cons (e1, e2)) cont =
       withParam e1 $ withParam e2 $ cont
