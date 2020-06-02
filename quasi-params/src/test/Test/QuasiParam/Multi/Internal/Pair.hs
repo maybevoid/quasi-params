@@ -37,7 +37,7 @@ class
   )
   => IsMultiParam (e :: Type -> Type -> Type) where
     type family AsMultiParam e
-      = (e2 :: Pair Type Type -> Type) | e2 -> e
+      :: Pair Type Type -> Type
 
     coerceTo
       :: forall a b

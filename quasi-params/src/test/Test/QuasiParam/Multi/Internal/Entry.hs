@@ -26,7 +26,7 @@ class
   )
   => IsMultiParam e where
     type family AsMultiParam e
-      = (e2 :: () -> Type) | e2 -> e
+      :: () -> Type
 
     coerceTo :: e -> AsMultiParam e '()
     coerceFrom :: AsMultiParam e '() -> e

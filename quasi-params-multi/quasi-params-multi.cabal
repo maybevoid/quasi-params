@@ -1,6 +1,6 @@
-cabal-version: 2.4
+cabal-version: 3.0
 
-name:                quasi-params
+name:                quasi-params-multi
 version:             0.1.0.0
 synopsis:            Labelled Parameters as Constraints
 category:            Data
@@ -22,6 +22,7 @@ common deps
   build-depends:
       base
     , ghc-prim
+    , quasi-params
 
   default-extensions:
     GADTs
@@ -51,31 +52,24 @@ library
   import: deps
 
   exposed-modules:
-    Data.QuasiParam
-    Data.QuasiParam.Dict
+    Data.QuasiParam.MultiParam.Module
 
-    Data.QuasiParam.Label
-    Data.QuasiParam.Tag
-    Data.QuasiParam.Name
-
-    Data.QuasiParam.Injective.Label
-    Data.QuasiParam.Injective.Tag
-    Data.QuasiParam.Injective.Name
-
-    Data.QuasiParam.Multi
-
-  other-modules:
-    Data.QuasiParam.Internal
-    Data.QuasiParam.Injective.Internal
-
-    Data.QuasiParam.Multi.Param
-    Data.QuasiParam.Multi.Cast
-    Data.QuasiParam.Multi.Entail
+  signatures:
+    Data.QuasiParam.MultiParam.Sig
 
   hs-source-dirs:
       src/lib
 
-test-suite quasi-params-test
+library quasi-params-multi-test-item
+  import: deps
+
+  exposed-modules:
+    Data.QuasiParam.Item.Sig
+
+  hs-source-dirs:
+      src/item
+
+test-suite quasi-params-multi-test
   import: deps
   type: exitcode-stdio-1.0
   main-is: Main.hs
@@ -84,19 +78,22 @@ test-suite quasi-params-test
 
   other-modules:
     Test.QuasiParam.Main
-    Test.QuasiParam.Basic
-    Test.QuasiParam.Basic.Name
-    Test.QuasiParam.Overlap
-    Test.QuasiParam.Stress
-    Test.QuasiParam.Multi
-    Test.QuasiParam.Multi.Item
-    Test.QuasiParam.Multi.Bifunctor
-    Test.QuasiParam.Multi.Internal.Item
-    Test.QuasiParam.Multi.Internal.Entry
-    Test.QuasiParam.Multi.Internal.Pair
-    Test.QuasiParam.Multi.Internal.Bifunctor
+    Test.QuasiParam.Item
+    Test.QuasiParam.Item.Internal
 
   build-depends:
       quasi-params
+    , quasi-params-multi
+    , quasi-params-multi-test-item
     , tasty
     , tasty-hunit
+
+  mixins:
+    quasi-params-multi
+      ( Data.QuasiParam.MultiParam.Module
+        as Data.QuasiParam.Item
+      )
+      requires
+        ( Data.QuasiParam.MultiParam.Sig
+          as Data.QuasiParam.Item.Sig
+        )
