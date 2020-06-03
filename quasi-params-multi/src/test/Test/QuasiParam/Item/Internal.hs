@@ -15,6 +15,10 @@ module Test.QuasiParam.Item.Internal
   , Multi.EntailParam (..)
   , Multi.CastParam (..)
 
+  , Multi.Label
+  , Multi.HasLabel (..)
+  , Multi.Cell (..)
+
   , Multi.entailValue
   , Multi.castParam
   , Multi.castValue

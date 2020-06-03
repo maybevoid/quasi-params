@@ -1,5 +1,6 @@
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE UndecidableSuperClasses #-}
 
 module Data.QuasiParam.MultiParam.Module where
 
@@ -9,6 +10,55 @@ import Data.QuasiParam.Dict
 import qualified Data.QuasiParam.Label as Label
 
 import Data.QuasiParam.MultiParam.Sig
+
+data Label k (label :: k)
+
+class IsLabel label where
+  type family LabelConstraint label e = (c :: Constraint) | c -> label
+
+  captureLabel
+    :: forall e
+     . (LabelConstraint label e)
+    => e
+
+  withLabel
+    :: forall e r
+     . e
+    -> (LabelConstraint label e => r)
+    -> r
+
+instance IsLabel (Label k (label ::k)) where
+  type LabelConstraint (Label k label) e = Label.Param k label e
+
+  captureLabel = Label.captureParam @k @label
+  withLabel = Label.withParam @k @label
+
+data Cell e (t :: ArgKind) = Cell (e t)
+
+class
+  ( IsLabel (ToLabel e) )
+  => HasLabel (e :: ArgKind -> Type) where
+    type family ToLabel e
+
+class
+  ( IsLabel l
+  , LabelConstraint l e
+  )
+  => OnLabel l e
+
+instance
+  ( IsLabel l
+  , LabelConstraint l e
+  )
+  => OnLabel l e
+
+instance (HasLabel e)
+  => MultiParam (Cell e) where
+    type ParamConstraint (Cell e) t
+      = OnLabel (ToLabel e) (Cell e t)
+
+    withParam = withLabel @(ToLabel e)
+    captureParam = captureLabel @(ToLabel e)
 
 data Empty (t :: ArgKind) = Empty
 
