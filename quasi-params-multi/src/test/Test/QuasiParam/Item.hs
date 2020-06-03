@@ -40,10 +40,10 @@ baz :: Baz String
 baz = Baz "baz"
 
 fooBar :: FooBar String
-fooBar = foo :+ bar :+ Nil
+fooBar = foo :+ bar
 
 fooBarBaz :: FooBarBaz String
-fooBarBaz = foo :+ bar :+ baz :+ Nil
+fooBarBaz = foo :+ bar :+ baz
 
 barFoo :: BarFoo String
 barFoo = castValue fooBar
@@ -57,21 +57,21 @@ fooBaz = castValue bazBarFoo
 testConversion :: TestTree
 testConversion = testCase "test conversion to multi param" $ do
   case barFoo of
-    Item bar2 :+ Item foo2 :+ Nil ->
+    Item bar2 :+ Item foo2 ->
       assertEqual
         "foo bar should be converted to bar foo"
         (bar2, foo2)
         ("bar", "foo")
 
   case bazBarFoo of
-    Baz baz2 :+ Item bar2 :+ Item foo2 :+ Nil ->
+    Baz baz2 :+ Item bar2 :+ Item foo2 ->
       assertEqual
         "foo bar should be converted to bar foo"
         (baz2, (bar2, foo2))
         ("baz", ("bar", "foo"))
 
   case fooBaz of
-    Item foo2 :+ Baz baz2 :+ Nil ->
+    Item foo2 :+ Baz baz2 ->
       assertEqual
         "foo bar should be converted to foo baz"
         (foo2, baz2)

@@ -4,7 +4,7 @@ let
 
   remote-src = builtins.fetchGit {
     url = "https://github.com/maybevoid/maybevoid-nix.git";
-    rev = "8570adce981515ecbee6c684c5bca8e18fc1d97e";
+    rev = "13e37dbe0975b3b7b0f664b2e1e3e4bed8ee8c70";
   };
 in
 if useLocal then local-src else remote-src

@@ -7,6 +7,7 @@ build:
 
 test:
 	cabal run quasi-params-test
+	cabal run quasi-params-multi-test
 
 cachix:
 	nix-store -qR --include-outputs `nix-instantiate nix/shell.nix` | cachix push maybevoid

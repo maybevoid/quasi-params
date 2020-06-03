@@ -114,6 +114,11 @@ instance
       => Dict (ParamConstraint e2 t)
     castParamDict = entailParam @e1 @e2 @t Dict
 
+type family Params (xs :: [ArgKind -> Type]) :: (ArgKind -> Type) where
+  Params '[] = Empty
+  Params (x:'[]) = x
+  Params (x:xs) = Cons x (Params xs)
+
 entailValue
   :: forall e1 e2 t
    . (EntailParam e1 e2 t)

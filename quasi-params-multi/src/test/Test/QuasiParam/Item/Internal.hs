@@ -22,7 +22,6 @@ module Test.QuasiParam.Item.Internal
 
 where
 
-import Data.Kind
 import Data.Functor.Identity
 
 import GHC.Types (Symbol)
@@ -63,6 +62,4 @@ pattern (:+)
 pattern e1 :+ e2 = Multi.Cons e1 e2
 {-# COMPLETE (:+) #-}
 
-type family Items (xs :: [Type -> Type]) :: (Type -> Type) where
-  Items '[] = Nil
-  Items (x:xs) = Union x (Items xs)
+type Items xs = Multi.Params xs
