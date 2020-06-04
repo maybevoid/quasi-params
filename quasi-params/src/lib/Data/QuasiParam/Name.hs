@@ -2,6 +2,8 @@
 
 module Data.QuasiParam.Name
   ( Param
+  , Name
+  , IsName
   , captureParam
   , withParam
   )
@@ -9,19 +11,25 @@ where
 
 import GHC.Types (Symbol)
 
-import qualified Data.QuasiParam.Internal as Internal
+import qualified Data.QuasiParam.Label as Label
 
-type Param name a = Internal.Param Symbol name a
+type Param name = Label.Param Symbol name
+
+type Name = Label.Label Symbol
+
+class (Label.IsLabel name) => IsName name
+
+instance IsName (Label.Label Symbol name)
 
 captureParam
   :: forall name a
    . (Param name a)
   => a
-captureParam = Internal.captureParam @Symbol @name
+captureParam = Label.captureParam @Symbol @name
 
 withParam
   :: forall name a r
    . a
   -> (Param name a => r)
   -> r
-withParam = Internal.withParam @Symbol @name
+withParam = Label.withParam @Symbol @name

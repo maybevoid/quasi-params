@@ -1,69 +1,30 @@
 {-# LANGUAGE PolyKinds #-}
 
 module Test.QuasiParam.Item.Internal
-  ( LabeledItem
-  , Nil
-  , Union
-  , Item
+  ( Item (..)
   , Items
   , pattern (:+)
-  , pattern Nil
-  , pattern Item
-  , pattern LabeledItem
-
-  , Multi.MultiParam (..)
-  , Multi.EntailParam (..)
-  , Multi.CastParam (..)
-
-  , Multi.Label
-  , Multi.HasLabel (..)
-  , Multi.Cell (..)
-
-  , Multi.entailValue
-  , Multi.castParam
-  , Multi.castValue
+  , module Data.QuasiParam.Item
   )
-
 where
 
-import Data.Functor.Identity
-
 import GHC.Types (Symbol)
-import Data.QuasiParam.Item as Multi
+import Data.QuasiParam.Item
 
-type LabeledItem k (label :: k)
-  = Multi.Elem k label Identity
+import Data.QuasiParam.Name (Name)
 
-type Item name = LabeledItem Symbol name
+data Item (name :: Symbol) a = Item a
 
-type Nil = Multi.Empty
+instance HasLabel (Item name) where
+  type GetLabel (Item name) = Name name
 
-type Union = Multi.Cons
-
-pattern Nil :: forall t . Nil t
-pattern Nil = Multi.Empty
-{-# COMPLETE Nil #-}
-
-pattern LabeledItem
-  :: forall k (label :: k) t
-   . t
-  -> LabeledItem k label t
-pattern LabeledItem e = Multi.Elem (Identity e)
-
-pattern Item
-  :: forall name t
-   . t
-  -> Item name t
-pattern Item e = LabeledItem e
-{-# COMPLETE Item #-}
+type Items xs = Params xs
 
 infixr 7 :+
 pattern (:+)
   :: forall e1 e2 t
    . e1 t
   -> e2 t
-  -> Union e1 e2 t
-pattern e1 :+ e2 = Multi.Cons e1 e2
+  -> Cons e1 e2 t
+pattern e1 :+ e2 = Cons e1 e2
 {-# COMPLETE (:+) #-}
-
-type Items xs = Multi.Params xs
