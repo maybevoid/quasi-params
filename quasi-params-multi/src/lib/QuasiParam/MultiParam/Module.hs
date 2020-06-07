@@ -28,6 +28,7 @@ type Cons e1 e2 = Union (Cell e1) e2
 
 pattern Cons :: forall e1 e2 t . e1 t -> e2 t -> Cons e1 e2 t
 pattern Cons e1 e2 = Union (Cell e1) e2
+{-# COMPLETE Cons #-}
 
 class NoConstraint (t :: ArgKind)
 instance NoConstraint t
@@ -96,6 +97,11 @@ class
       => ((ParamConstraint e2 t) => r)
       -> r
 
+type EntailDict e1 e2 t
+  = (ParamConstraint e1 t) => Dict (ParamConstraint e2 t)
+
+type CastDict e1 e2 = forall t . EntailDict e1 e2 t
+
 instance
   ( MultiParam e1
   , MultiParam e2
@@ -111,10 +117,7 @@ class
   , MultiParam e2
   )
   => CastParam e1 e2 where
-    castParamDict
-      :: forall t
-       . (ParamConstraint e1 t)
-      => Dict (ParamConstraint e2 t)
+    castDict :: CastDict e1 e2
 
 instance
   ( MultiParam e1
@@ -122,15 +125,29 @@ instance
   , forall t . EntailParam e1 e2 t
   )
   => CastParam e1 e2 where
-    castParamDict
+    castDict
       :: forall t
        . (ParamConstraint e1 t)
       => Dict (ParamConstraint e2 t)
-    castParamDict = entailParam @e1 @e2 @t Dict
+    castDict = entailParam @e1 @e2 @t Dict
 
 type family Params (xs :: [ArgKind -> Type]) :: (ArgKind -> Type) where
   Params '[] = Nil
   Params (x:xs) = Cons x (Params xs)
+
+withCell
+  :: forall e t r
+   . (HasLabel e)
+  => e t
+  -> (ParamConstraint (Cell e) t => r)
+  -> r
+withCell e = withParam (Cell e)
+
+captureCell
+  :: forall e t
+   . (HasLabel e, ParamConstraint (Cell e) t)
+  => e t
+captureCell = unCell captureParam
 
 entailValue
   :: forall e1 e2 t
@@ -148,7 +165,7 @@ castParam
      )
   => ((ParamConstraint e2 t) => r)
   -> r
-castParam cont = case castParamDict @e1 @e2 @t of
+castParam cont = case castDict @e1 @e2 @t of
   Dict -> cont
 
 castValue
@@ -160,16 +177,45 @@ castValue e = withParam e $
   castParam @e1 @e2 @t $
     captureParam
 
-withCell
-  :: forall e t r
-   . (HasLabel e)
-  => e t
-  -> (ParamConstraint (Cell e) t => r)
-  -> r
-withCell e = withParam (Cell e)
+castValueWithDict
+  :: forall e1 e2 t
+   . ( MultiParam e1
+     , MultiParam e2
+     )
+  => CastDict e1 e2
+  -> e1 t
+  -> e2 t
+castValueWithDict dict e = withParam e $
+  case dict @t of
+    Dict -> captureParam
 
-captureCell
-  :: forall e t
-   . (HasLabel e, ParamConstraint (Cell e) t)
-  => e t
-captureCell = unCell captureParam
+entailDict
+  :: forall e1 e2 t
+   . (EntailParam e1 e2 t)
+  => EntailDict e1 e2 t
+entailDict = entailParam @e1 @e2 @t Dict
+
+extendCast
+  :: forall e1 e2 e3
+   . CastDict e1 e2
+  -> CastDict (Union e1 e3) (Union e2 e3)
+extendCast cast1 = cast2
+ where
+  cast2
+    :: forall t
+     . EntailDict (Union e1 e3) (Union e2 e3) t
+  cast2 = case cast1 @t of Dict -> Dict
+
+composeCast
+  :: forall e1 e2 e3
+   . CastDict e1 e2
+  -> CastDict e2 e3
+  -> CastDict e1 e3
+composeCast cast1 cast2 = cast3
+ where
+  cast3
+    :: forall t
+     . EntailDict e1 e3 t
+  cast3 = case (cast1 @t) of
+    Dict -> case (cast2 @t) of
+      Dict -> Dict
