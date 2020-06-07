@@ -13,7 +13,8 @@ import GHC.Types (Symbol)
 
 import qualified QuasiParam.Label as Label
 
-type Param name = Label.Param Symbol name
+class (Label.Param Symbol name a) => Param name a
+instance (Label.Param Symbol name a) => Param name a
 
 type Name = Label.Label Symbol
 
