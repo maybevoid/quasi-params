@@ -15,7 +15,8 @@ import Data.QuasiParam.MultiParam.Sig
 
 data Nil (t :: ArgKind) = Nil
 
-data Cell e (t :: ArgKind) = Cell (e t)
+data Cell e (t :: ArgKind)
+  = Cell { unCell :: e t }
 
 data Union
   (e1 :: ArgKind -> Type)
@@ -158,3 +159,17 @@ castValue
 castValue e = withParam e $
   castParam @e1 @e2 @t $
     captureParam
+
+withCell
+  :: forall e t r
+   . (HasLabel e)
+  => e t
+  -> (ParamConstraint (Cell e) t => r)
+  -> r
+withCell e = withParam (Cell e)
+
+captureCell
+  :: forall e t
+   . (HasLabel e, ParamConstraint (Cell e) t)
+  => e t
+captureCell = unCell captureParam

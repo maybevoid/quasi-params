@@ -55,6 +55,8 @@ fooBazBarFoo = castValue fooBarBaz
 
 testConversion :: TestTree
 testConversion = testCase "test conversion to multi param" $ do
+  let bar' :: Bar String = withParam fooBaz $ captureItem
+
   case barFoo of
     Item bar2 :+ Item foo2 :+ Nil ->
       assertEqual
