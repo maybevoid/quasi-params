@@ -1,6 +1,6 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
 
-module Data.QuasiParam.Injective.Name
+module QuasiParam.Injective.Name
   ( Param
   , captureParam
   , withParam
@@ -9,7 +9,7 @@ where
 
 import GHC.Types (Symbol)
 
-import qualified Data.QuasiParam.Injective.Internal as Internal
+import qualified QuasiParam.Injective.Internal as Internal
 
 type Param name a = Internal.Param Symbol name a
 

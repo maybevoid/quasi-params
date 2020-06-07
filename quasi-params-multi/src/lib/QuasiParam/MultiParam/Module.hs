@@ -2,16 +2,16 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE UndecidableSuperClasses #-}
 
-module Data.QuasiParam.MultiParam.Module where
+module QuasiParam.MultiParam.Module where
 
 import Data.Kind
 
-import Data.QuasiParam.Dict
-import Data.QuasiParam.Label
+import QuasiParam.Dict
+import QuasiParam.Label
   ( IsLabel (..)
   )
 
-import Data.QuasiParam.MultiParam.Sig
+import QuasiParam.MultiParam.Sig
 
 data Nil (t :: ArgKind) = Nil
 

@@ -1,0 +1,5 @@
+{-# LANGUAGE PolyKinds #-}
+
+signature QuasiParam.MultiParam.Sig where
+
+data ArgKind

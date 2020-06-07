@@ -6,15 +6,15 @@ module Test.QuasiParam.Item.Internal
   , pattern (:+)
   , withItem
   , captureItem
-  , module Data.QuasiParam.Item
+  , module Test.QuasiParam.Item.Module
   )
 where
 
 import GHC.Types (Symbol)
-import Data.QuasiParam.Item
+import Test.QuasiParam.Item.Module
 
-import Data.QuasiParam.Name (Name)
-import qualified Data.QuasiParam.Name as Name
+import QuasiParam.Name (Name)
+import qualified QuasiParam.Name as Name
 
 data Item (name :: Symbol) a = Item a
 

@@ -1,8 +1,8 @@
 {-# LANGUAGE PolyKinds #-}
 
-module Data.QuasiParam.Multi.Param where
+module QuasiParam.Multi.Param where
 
-import qualified Data.QuasiParam.Label as Label
+import qualified QuasiParam.Label as Label
 
 import Data.Kind (Type, Constraint)
 

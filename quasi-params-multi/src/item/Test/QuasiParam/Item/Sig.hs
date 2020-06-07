@@ -1,4 +1,4 @@
-module Data.QuasiParam.Item.Sig where
+module Test.QuasiParam.Item.Sig where
 
 import Data.Kind
 

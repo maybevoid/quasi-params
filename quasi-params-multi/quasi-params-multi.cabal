@@ -52,29 +52,30 @@ library
   import: deps
 
   exposed-modules:
-    Data.QuasiParam.MultiParam.Module
+    QuasiParam.MultiParam.Module
 
   signatures:
-    Data.QuasiParam.MultiParam.Sig
+    QuasiParam.MultiParam.Sig
 
   hs-source-dirs:
-      src/lib
+    src/lib
 
 library quasi-params-multi-test-item
   import: deps
 
-  exposed-modules:
-    Data.QuasiParam.Item.Sig
-
   hs-source-dirs:
-      src/item
+    src/item
+
+  exposed-modules:
+    Test.QuasiParam.Item.Sig
 
 test-suite quasi-params-multi-test
   import: deps
   type: exitcode-stdio-1.0
   main-is: Main.hs
+
   hs-source-dirs:
-      src/test
+    src/test
 
   other-modules:
     Test.QuasiParam.Main
@@ -90,10 +91,10 @@ test-suite quasi-params-multi-test
 
   mixins:
     quasi-params-multi
-      ( Data.QuasiParam.MultiParam.Module
-        as Data.QuasiParam.Item
+      ( QuasiParam.MultiParam.Module
+        as Test.QuasiParam.Item.Module
       )
       requires
-        ( Data.QuasiParam.MultiParam.Sig
-          as Data.QuasiParam.Item.Sig
+        ( QuasiParam.MultiParam.Sig
+          as Test.QuasiParam.Item.Sig
         )

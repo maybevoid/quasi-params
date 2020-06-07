@@ -51,26 +51,26 @@ library
   import: deps
 
   exposed-modules:
-    Data.QuasiParam
-    Data.QuasiParam.Dict
+    QuasiParam
+    QuasiParam.Dict
 
-    Data.QuasiParam.Label
-    Data.QuasiParam.Tag
-    Data.QuasiParam.Name
+    QuasiParam.Label
+    QuasiParam.Tag
+    QuasiParam.Name
 
-    Data.QuasiParam.Injective.Label
-    Data.QuasiParam.Injective.Tag
-    Data.QuasiParam.Injective.Name
+    QuasiParam.Injective.Label
+    QuasiParam.Injective.Tag
+    QuasiParam.Injective.Name
 
-    Data.QuasiParam.Multi
+    QuasiParam.Multi
 
   other-modules:
-    Data.QuasiParam.Internal
-    Data.QuasiParam.Injective.Internal
+    QuasiParam.Internal
+    QuasiParam.Injective.Internal
 
-    Data.QuasiParam.Multi.Param
-    Data.QuasiParam.Multi.Cast
-    Data.QuasiParam.Multi.Entail
+    QuasiParam.Multi.Param
+    QuasiParam.Multi.Cast
+    QuasiParam.Multi.Entail
 
   hs-source-dirs:
       src/lib

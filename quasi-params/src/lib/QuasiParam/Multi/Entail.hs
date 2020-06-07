@@ -1,9 +1,9 @@
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
 
-module Data.QuasiParam.Multi.Entail where
+module QuasiParam.Multi.Entail where
 
-import Data.QuasiParam.Multi.Param
+import QuasiParam.Multi.Param
 
 class
   ( MultiParam k e1

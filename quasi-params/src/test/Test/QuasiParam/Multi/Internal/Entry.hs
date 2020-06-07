@@ -4,7 +4,7 @@ import Data.Kind
 import Data.Coerce
 import GHC.Types (Symbol)
 
-import qualified Data.QuasiParam.Multi as Multi
+import qualified QuasiParam.Multi as Multi
 
 newtype Const a (b :: ()) = Const
   { unConst :: a }

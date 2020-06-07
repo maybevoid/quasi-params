@@ -5,7 +5,7 @@ import Data.Coerce
 import GHC.Types (Symbol)
 import Data.Functor.Identity
 
-import qualified Data.QuasiParam.Multi as Multi
+import qualified QuasiParam.Multi as Multi
 
 newtype Nil a = Nil ()
 

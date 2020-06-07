@@ -3,7 +3,7 @@ module Test.QuasiParam.Basic.Name where
 import Test.Tasty
 import Test.Tasty.HUnit
 
-import Data.QuasiParam.Name
+import QuasiParam.Name
 
 tests :: TestTree
 tests = testGroup "Quasi parameters basic named parameters tests"

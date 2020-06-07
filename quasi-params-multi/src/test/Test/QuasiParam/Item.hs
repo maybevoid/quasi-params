@@ -4,7 +4,7 @@ import Test.Tasty
 import Test.Tasty.HUnit
 
 import Test.QuasiParam.Item.Internal
-import Data.QuasiParam.Name (Name)
+import QuasiParam.Name (Name)
 
 tests :: TestTree
 tests = testGroup "Multi parameters unitype items test"
@@ -55,8 +55,6 @@ fooBazBarFoo = castValue fooBarBaz
 
 testConversion :: TestTree
 testConversion = testCase "test conversion to multi param" $ do
-  let bar' :: Bar String = withParam fooBaz $ captureItem
-
   case barFoo of
     Item bar2 :+ Item foo2 :+ Nil ->
       assertEqual

@@ -1,7 +1,7 @@
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
 
-module Data.QuasiParam.Multi
+module QuasiParam.Multi
   ( Internal.Empty (..)
   , Internal.Elem (..)
   , Internal.Cons (..)
@@ -20,9 +20,9 @@ where
 
 import Data.Kind
 
-import qualified Data.QuasiParam.Multi.Param as Internal
-import qualified Data.QuasiParam.Multi.Entail as Internal
-import qualified Data.QuasiParam.Multi.Cast as Internal
+import qualified QuasiParam.Multi.Param as Internal
+import qualified QuasiParam.Multi.Entail as Internal
+import qualified QuasiParam.Multi.Cast as Internal
 
 type MultiParam k (e :: k -> Type)
   = Internal.MultiParam k e

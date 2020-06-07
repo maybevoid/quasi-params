@@ -1,7 +1,7 @@
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
 
-module Data.QuasiParam.Label
+module QuasiParam.Label
   ( Param
   , Label
   , IsLabel (..)
@@ -12,7 +12,7 @@ where
 
 import Data.Kind
 
-import qualified Data.QuasiParam.Internal as Internal
+import qualified QuasiParam.Internal as Internal
 
 type Param k (label :: k) = Internal.Param k label
 

@@ -1,6 +1,6 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
 
-module Data.QuasiParam.Name
+module QuasiParam.Name
   ( Param
   , Name
   , IsName
@@ -11,7 +11,7 @@ where
 
 import GHC.Types (Symbol)
 
-import qualified Data.QuasiParam.Label as Label
+import qualified QuasiParam.Label as Label
 
 type Param name = Label.Param Symbol name
 

@@ -3,7 +3,7 @@ module Test.QuasiParam.Stress where
 import Test.Tasty
 import Test.Tasty.HUnit
 
-import Data.QuasiParam.Name
+import QuasiParam.Name
 
 tests :: TestTree
 tests = testGroup "Quasi parameters stree tests"

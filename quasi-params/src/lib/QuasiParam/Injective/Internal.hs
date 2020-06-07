@@ -1,11 +1,11 @@
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
 
-module Data.QuasiParam.Injective.Internal
+module QuasiParam.Injective.Internal
 where
 
 import Data.Kind (Constraint)
-import qualified Data.QuasiParam.Label as Label
+import qualified QuasiParam.Label as Label
 
 class InjectiveParam k (label :: k) where
   type family Param k (label :: k) a

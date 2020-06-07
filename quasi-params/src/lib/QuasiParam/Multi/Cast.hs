@@ -1,13 +1,13 @@
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
 
-module Data.QuasiParam.Multi.Cast where
+module QuasiParam.Multi.Cast where
 
 import Data.Kind
 
-import Data.QuasiParam.Dict
-import Data.QuasiParam.Multi.Param
-import Data.QuasiParam.Multi.Entail
+import QuasiParam.Dict
+import QuasiParam.Multi.Param
+import QuasiParam.Multi.Entail
 
 class
   ( MultiParam k e1

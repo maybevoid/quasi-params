@@ -8,7 +8,7 @@ import GHC.Types (Symbol)
 import Data.Functor.Identity
 
 import Test.QuasiParam.Multi.Internal.Item
-import qualified Data.QuasiParam.Multi as Multi
+import qualified QuasiParam.Multi as Multi
 
 tests :: TestTree
 tests = testGroup "Multi parameters unitype items test"

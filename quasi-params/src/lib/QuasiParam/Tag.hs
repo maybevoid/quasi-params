@@ -1,6 +1,6 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
 
-module Data.QuasiParam.Tag
+module QuasiParam.Tag
   ( Param
   , Tag
   , IsTag
@@ -9,7 +9,7 @@ module Data.QuasiParam.Tag
   )
 where
 
-import qualified Data.QuasiParam.Label as Label
+import qualified QuasiParam.Label as Label
 
 import Data.Kind (Type)
 

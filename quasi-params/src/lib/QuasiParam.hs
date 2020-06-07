@@ -1,7 +1,7 @@
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
 
-module Data.QuasiParam
+module QuasiParam
   ( LabelledParam
   , TaggedParam
   , NamedParam
@@ -14,9 +14,9 @@ module Data.QuasiParam
   )
 where
 
-import qualified Data.QuasiParam.Label as Label
-import qualified Data.QuasiParam.Tag as Tag
-import qualified Data.QuasiParam.Name as Name
+import qualified QuasiParam.Label as Label
+import qualified QuasiParam.Tag as Tag
+import qualified QuasiParam.Name as Name
 
 type LabelledParam k (label :: k) a = Label.Param k label a
 type TaggedParam tag a = Tag.Param tag a

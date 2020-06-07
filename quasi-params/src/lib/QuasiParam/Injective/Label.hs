@@ -1,14 +1,14 @@
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
 
-module Data.QuasiParam.Injective.Label
+module QuasiParam.Injective.Label
   ( Param
   , captureParam
   , withParam
   )
 where
 
-import qualified Data.QuasiParam.Injective.Internal as Internal
+import qualified QuasiParam.Injective.Internal as Internal
 
 type Param k (label :: k) a = Internal.Param k label a
 
