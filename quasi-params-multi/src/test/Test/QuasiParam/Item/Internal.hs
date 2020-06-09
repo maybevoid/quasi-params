@@ -32,17 +32,17 @@ pattern (:+)
 pattern e1 :+ e2 = Cons e1 e2
 {-# COMPLETE (:+) #-}
 
-type ItemConstraint name a = Name.Param name (Cell (Item name) a)
+type ItemConstraint name a = Name.Param name (Singleton (Item name) a)
 
 withItem
   :: forall name a r
    . Item name a
   -> (ItemConstraint name a => r)
   -> r
-withItem = withCell
+withItem = withSingleton
 
 captureItem
   :: forall name a
    . (ItemConstraint name a)
   => Item name a
-captureItem = captureCell
+captureItem = captureSingleton

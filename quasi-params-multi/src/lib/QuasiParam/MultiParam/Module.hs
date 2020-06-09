@@ -15,8 +15,8 @@ import QuasiParam.MultiParam.Sig
 
 data Nil (t :: ArgKind) = Nil
 
-data Cell e (t :: ArgKind)
-  = Cell { unCell :: e t }
+data Singleton e (t :: ArgKind)
+  = Singleton { unSingleton :: e t }
 
 data Union
   (e1 :: ArgKind -> Type)
@@ -24,14 +24,11 @@ data Union
   (t :: ArgKind)
   = Union (e1 t) (e2 t)
 
-type Cons e1 e2 = Union (Cell e1) e2
-
-pattern Cons :: forall e1 e2 t . e1 t -> e2 t -> Cons e1 e2 t
-pattern Cons e1 e2 = Union (Cell e1) e2
-{-# COMPLETE Cons #-}
-
-class NoConstraint (t :: ArgKind)
-instance NoConstraint t
+data Cons
+  (e1 :: ArgKind -> Type)
+  (e2 :: ArgKind -> Type)
+  (t :: ArgKind)
+  = Cons (e1 t) (e2 t)
 
 class MultiParam (e :: ArgKind -> Type) where
   type family ParamConstraint
@@ -50,11 +47,17 @@ class MultiParam (e :: ArgKind -> Type) where
     -> (ParamConstraint e t => r)
     -> r
 
+class NoConstraint (t :: ArgKind)
+instance NoConstraint t
+
 instance MultiParam Nil where
   type ParamConstraint Nil t = NoConstraint t
 
   captureParam = Nil
   withParam Nil cont = cont
+
+class (c1, c2) => UnionConstraint c1 c2
+instance (c1, c2) => UnionConstraint c1 c2
 
 instance
   ( MultiParam e1
@@ -62,7 +65,9 @@ instance
   )
   => MultiParam (Union e1 e2) where
     type ParamConstraint (Union e1 e2) t
-      = (ParamConstraint e1 t, ParamConstraint e2 t)
+      = UnionConstraint
+          (ParamConstraint e1 t)
+          (ParamConstraint e2 t)
 
     captureParam = Union (captureParam @e1) (captureParam @e2)
 
@@ -74,17 +79,36 @@ class
   => HasLabel (e :: ArgKind -> Type) where
     type family GetLabel e
 
--- Workaround injective type families restriction
-class (LabelConstraint l e) => LabelConstraint' l e
-instance (LabelConstraint l e) => LabelConstraint' l e
+class (LabelConstraint l e) => SingletonConstraint l e
+instance (LabelConstraint l e) => SingletonConstraint l e
 
 instance (HasLabel e, IsLabel (GetLabel e))
-  => MultiParam (Cell e) where
-    type ParamConstraint (Cell e) t
-      = LabelConstraint' (GetLabel e) (Cell e t)
+  => MultiParam (Singleton e) where
+    type ParamConstraint (Singleton e) t
+      = SingletonConstraint (GetLabel e) (Singleton e t)
 
     withParam = withLabel @(GetLabel e)
     captureParam = captureLabel @(GetLabel e)
+
+class ( LabelConstraint label e, c ) => ConsConstraint label e c
+instance ( LabelConstraint label e, c ) => ConsConstraint label e c
+
+instance
+  ( HasLabel e1
+  , IsLabel (GetLabel e1)
+  , MultiParam e2
+  )
+  => MultiParam (Cons e1 e2) where
+    type ParamConstraint (Cons e1 e2) t
+      = ConsConstraint
+          (GetLabel e1)
+          (e1 t)
+          (ParamConstraint e2 t)
+
+    withParam (Cons e1 e2) cont
+      = withLabel @(GetLabel e1) e1 $ withParam e2 cont
+
+    captureParam = Cons (captureLabel @(GetLabel e1)) (captureParam @e2)
 
 class
   ( MultiParam e1
@@ -135,19 +159,19 @@ type family Params (xs :: [ArgKind -> Type]) :: (ArgKind -> Type) where
   Params '[] = Nil
   Params (x:xs) = Cons x (Params xs)
 
-withCell
+withSingleton
   :: forall e t r
    . (HasLabel e)
   => e t
-  -> (ParamConstraint (Cell e) t => r)
+  -> (ParamConstraint (Singleton e) t => r)
   -> r
-withCell e = withParam (Cell e)
+withSingleton e = withParam (Singleton e)
 
-captureCell
+captureSingleton
   :: forall e t
-   . (HasLabel e, ParamConstraint (Cell e) t)
+   . (HasLabel e, ParamConstraint (Singleton e) t)
   => e t
-captureCell = unCell captureParam
+captureSingleton = unSingleton captureParam
 
 entailValue
   :: forall e1 e2 t
