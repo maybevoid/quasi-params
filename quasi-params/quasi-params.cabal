@@ -29,6 +29,7 @@ common deps
     DataKinds
     RankNTypes
     StrictData
+    StarIsType
     TypeFamilies
     InstanceSigs
     TypeOperators

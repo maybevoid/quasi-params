@@ -5,6 +5,7 @@ module QuasiParam.Label
   ( Param
   , Label
   , IsLabel (..)
+  , HasLabel (..)
   , captureParam
   , withParam
   )
@@ -31,6 +32,11 @@ class IsLabel label where
      . e
     -> (LabelConstraint label e => r)
     -> r
+
+class
+  ( IsLabel (GetLabel e) )
+  => HasLabel (e :: k) where
+    type family GetLabel e
 
 instance IsLabel (Label k (label ::k)) where
   type LabelConstraint (Label k label) e = Param k label e

@@ -4,6 +4,7 @@ module Test.QuasiParam.Item.Internal
   ( Item (..)
   , Items
   , pattern (:+)
+  , HasLabel (..)
   , withItem
   , captureItem
   , module Test.QuasiParam.Item.Module
@@ -14,6 +15,7 @@ import GHC.Types (Symbol)
 import Test.QuasiParam.Item.Module
 
 import QuasiParam.Name (Name)
+import QuasiParam.Label (HasLabel (..))
 import qualified QuasiParam.Name as Name
 
 data Item (name :: Symbol) a = Item a

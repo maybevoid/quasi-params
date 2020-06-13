@@ -9,6 +9,7 @@ import Data.Kind
 import QuasiParam.Dict
 import QuasiParam.Label
   ( IsLabel (..)
+  , HasLabel (..)
   )
 
 import QuasiParam.MultiParam.Sig
@@ -74,21 +75,16 @@ instance
     withParam (Union e1 e2) cont =
       withParam e1 $ withParam e2 cont
 
-class
-  ( IsLabel (GetLabel e) )
-  => HasLabel (e :: ArgKind -> Type) where
-    type family GetLabel e
-
 class (LabelConstraint l e) => SingletonConstraint l e
 instance (LabelConstraint l e) => SingletonConstraint l e
 
 instance (HasLabel e, IsLabel (GetLabel e))
   => MultiParam (Singleton e) where
     type ParamConstraint (Singleton e) t
-      = SingletonConstraint (GetLabel e) (Singleton e t)
+      = SingletonConstraint (GetLabel e) (e t)
 
-    withParam = withLabel @(GetLabel e)
-    captureParam = captureLabel @(GetLabel e)
+    withParam (Singleton e) = withLabel @(GetLabel e) e
+    captureParam = Singleton $ captureLabel @(GetLabel e)
 
 class ( LabelConstraint label e, c ) => ConsConstraint label e c
 instance ( LabelConstraint label e, c ) => ConsConstraint label e c
