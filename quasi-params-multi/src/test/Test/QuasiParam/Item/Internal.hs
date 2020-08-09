@@ -34,7 +34,7 @@ pattern (:+)
 pattern e1 :+ e2 = Cons e1 e2
 {-# COMPLETE (:+) #-}
 
-type ItemConstraint name a = Name.Param name (Singleton (Item name) a)
+type ItemConstraint name a = Name.Param name (Item name a)
 
 withItem
   :: forall name a r
