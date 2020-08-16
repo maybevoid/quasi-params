@@ -1,6 +1,6 @@
 let
-  commit = "34f366a25d711bb2257065dff10e4cd935ac0c8c";
-  sha256 = "1a6l7lgrc2zhm1qn1zh9v4n320mkin8z76fqgvlk2cz6ihsr3bf1";
+  commit = "cd429f6ea6946c7a2fc78fc55a1b11cfd73acc86";
+  sha256 = "sha256:1n1br8hq2bka6z8zdprbcd64a8rpd2xcyp26rh5vykxqih0wcy3v";
 in
 builtins.fetchTarball
   { inherit sha256;

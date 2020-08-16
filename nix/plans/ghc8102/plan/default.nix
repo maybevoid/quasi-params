@@ -40,7 +40,7 @@
         "wcwidth".flags.split-base = true;
         "wcwidth".flags.cli = false;
         "text".revision = (((hackage."text")."1.2.3.2").revisions).default;
-        "base".revision = (((hackage."base")."4.14.0.0").revisions).default;
+        "base".revision = (((hackage."base")."4.14.1.0").revisions).default;
         "time".revision = (((hackage."time")."1.9.3").revisions).default;
         "tasty-hunit".revision = (((hackage."tasty-hunit")."0.10.0.2").revisions).default;
         "transformers".revision = (((hackage."transformers")."0.5.6.2").revisions).default;
@@ -52,15 +52,15 @@
         "colour".revision = (((hackage."colour")."2.3.5").revisions).default;
         "filepath".revision = (((hackage."filepath")."1.4.2.1").revisions).default;
         "unbounded-delays".revision = (((hackage."unbounded-delays")."0.1.1.0").revisions).default;
-        "process".revision = (((hackage."process")."1.6.8.2").revisions).default;
+        "process".revision = (((hackage."process")."1.6.9.0").revisions).default;
         "pretty".revision = (((hackage."pretty")."1.1.3.6").revisions).default;
-        "ghc-boot-th".revision = (((hackage."ghc-boot-th")."8.10.1").revisions).default;
+        "ghc-boot-th".revision = (((hackage."ghc-boot-th")."8.10.2").revisions).default;
         "array".revision = (((hackage."array")."0.5.4.0").revisions).default;
         "integer-gmp".revision = (((hackage."integer-gmp")."1.0.3.0").revisions).default;
         };
       compiler = {
-        version = "8.10.1";
-        nix-name = "ghc8101";
+        version = "8.10.2";
+        nix-name = "ghc8102";
         packages = {
           "binary" = "0.8.8.0";
           "ghc-prim" = "0.6.1";
@@ -74,32 +74,22 @@
           "containers" = "0.6.2.1";
           "bytestring" = "0.10.10.0";
           "text" = "1.2.3.2";
-          "base" = "4.14.0.0";
+          "base" = "4.14.1.0";
           "time" = "1.9.3";
           "transformers" = "0.5.6.2";
           "filepath" = "1.4.2.1";
-          "process" = "1.6.8.2";
+          "process" = "1.6.9.0";
           "pretty" = "1.1.3.6";
-          "ghc-boot-th" = "8.10.1";
+          "ghc-boot-th" = "8.10.2";
           "array" = "0.5.4.0";
           "integer-gmp" = "1.0.3.0";
           };
         };
       };
   extras = hackage:
-    {
-      packages = {
-        quasi-params-multi = ./.plan.nix/quasi-params-multi.nix;
-        quasi-params = ./.plan.nix/quasi-params.nix;
-        };
-      };
+    { packages = { quasi-params = ./.plan.nix/quasi-params.nix; }; };
   modules = [
     ({ lib, ... }:
-      {
-        packages = {
-          "quasi-params-multi" = { flags = {}; };
-          "quasi-params" = { flags = {}; };
-          };
-        })
+      { packages = { "quasi-params" = { flags = {}; }; }; })
     ];
   }

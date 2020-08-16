@@ -1,2 +1,2 @@
-packages: quasi-params quasi-params-multi
+packages: quasi-params
 write-ghc-environment-files: never

@@ -2,7 +2,7 @@ cabal-version: 2.4
 
 name:                quasi-params
 version:             0.1.0.0
-synopsis:            Labelled Parameters as Constraints
+synopsis:            Labeled Parameters as Constraints
 category:            Data
 stability:           experimental
 homepage:            https://github.com/maybevoid/quasi-params
@@ -21,6 +21,7 @@ common deps
 
   build-depends:
       base
+    , mtl
     , ghc-prim
 
   default-extensions:
@@ -51,27 +52,17 @@ common deps
 library
   import: deps
 
+  signatures:
+    QuasiParams.ArgKind
+
   exposed-modules:
-    QuasiParam
-    QuasiParam.Dict
-
-    QuasiParam.Label
-    QuasiParam.Tag
-    QuasiParam.Name
-
-    QuasiParam.Injective.Label
-    QuasiParam.Injective.Tag
-    QuasiParam.Injective.Name
-
-    QuasiParam.Multi
+    QuasiParams
 
   other-modules:
-    QuasiParam.Internal
-    QuasiParam.Injective.Internal
-
-    QuasiParam.Multi.Param
-    QuasiParam.Multi.Cast
-    QuasiParam.Multi.Entail
+    QuasiParams.Params
+    QuasiParams.HasParam
+    QuasiParams.CastParams
+    QuasiParams.MultiParam
 
   hs-source-dirs:
       src/lib
@@ -84,20 +75,7 @@ test-suite quasi-params-test
       src/test
 
   other-modules:
-    Test.QuasiParam.Main
-    Test.QuasiParam.Basic
-    Test.QuasiParam.Basic.Name
-    Test.QuasiParam.Overlap
-    Test.QuasiParam.Stress
-    Test.QuasiParam.Multi
-    Test.QuasiParam.Multi.Item
-    Test.QuasiParam.Multi.Bifunctor
-    Test.QuasiParam.Multi.Internal.Item
-    Test.QuasiParam.Multi.Internal.Entry
-    Test.QuasiParam.Multi.Internal.Pair
-    Test.QuasiParam.Multi.Internal.Bifunctor
 
   build-depends:
-      quasi-params
-    , tasty
+      tasty
     , tasty-hunit

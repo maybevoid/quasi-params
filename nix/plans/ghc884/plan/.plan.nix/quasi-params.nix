@@ -18,7 +18,7 @@
       author = "Soares Chen";
       homepage = "https://github.com/maybevoid/quasi-params";
       url = "";
-      synopsis = "Labelled Parameters as Constraints";
+      synopsis = "Labeled Parameters as Constraints";
       description = "";
       buildType = "Simple";
       isLocal = true;
@@ -37,22 +37,7 @@
           (hsPkgs."ghc-prim" or (errorHandler.buildDepError "ghc-prim"))
           ];
         buildable = true;
-        modules = [
-          "QuasiParam/Internal"
-          "QuasiParam/Injective/Internal"
-          "QuasiParam/Multi/Param"
-          "QuasiParam/Multi/Cast"
-          "QuasiParam/Multi/Entail"
-          "QuasiParam"
-          "QuasiParam/Dict"
-          "QuasiParam/Label"
-          "QuasiParam/Tag"
-          "QuasiParam/Name"
-          "QuasiParam/Injective/Label"
-          "QuasiParam/Injective/Tag"
-          "QuasiParam/Injective/Name"
-          "QuasiParam/Multi"
-          ];
+        modules = [ "QuasiParam" ];
         hsSourceDirs = [ "src/lib" ];
         };
       tests = {
@@ -65,20 +50,6 @@
             (hsPkgs."tasty-hunit" or (errorHandler.buildDepError "tasty-hunit"))
             ];
           buildable = true;
-          modules = [
-            "Test/QuasiParam/Main"
-            "Test/QuasiParam/Basic"
-            "Test/QuasiParam/Basic/Name"
-            "Test/QuasiParam/Overlap"
-            "Test/QuasiParam/Stress"
-            "Test/QuasiParam/Multi"
-            "Test/QuasiParam/Multi/Item"
-            "Test/QuasiParam/Multi/Bifunctor"
-            "Test/QuasiParam/Multi/Internal/Item"
-            "Test/QuasiParam/Multi/Internal/Entry"
-            "Test/QuasiParam/Multi/Internal/Pair"
-            "Test/QuasiParam/Multi/Internal/Bifunctor"
-            ];
           hsSourceDirs = [ "src/test" ];
           mainPath = [ "Main.hs" ];
           };

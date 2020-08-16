@@ -1,0 +1,3 @@
+signature QuasiParams.ArgKind where
+
+data ArgKind

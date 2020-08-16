@@ -42,8 +42,14 @@ let
   shell = project.shellFor
     { packages = hsPkgs:
         [ hsPkgs.quasi-params
-          hsPkgs.quasi-params-multi
         ];
+
+      tools = {
+        ghcid = "0.8.7";
+        cabal = "3.2.0.0";
+      };
+
+      withHoogle = false;
     };
 in
 { inherit

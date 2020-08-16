@@ -87,19 +87,9 @@
         };
       };
   extras = hackage:
-    {
-      packages = {
-        quasi-params-multi = ./.plan.nix/quasi-params-multi.nix;
-        quasi-params = ./.plan.nix/quasi-params.nix;
-        };
-      };
+    { packages = { quasi-params = ./.plan.nix/quasi-params.nix; }; };
   modules = [
     ({ lib, ... }:
-      {
-        packages = {
-          "quasi-params-multi" = { flags = {}; };
-          "quasi-params" = { flags = {}; };
-          };
-        })
+      { packages = { "quasi-params" = { flags = {}; }; }; })
     ];
   }

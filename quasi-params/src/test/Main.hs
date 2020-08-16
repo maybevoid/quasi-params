@@ -1,3 +1,3 @@
-module Main (main) where
 
-import Test.QuasiParam.Main (main)
+main :: IO ()
+main = return ()
